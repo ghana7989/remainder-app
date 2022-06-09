@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reminder/models/category.dart';
+import 'package:reminder/models/category/category.dart';
 
 class GridViewItems extends StatelessWidget {
   const GridViewItems({
@@ -35,15 +35,15 @@ class GridViewItems extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         category.icon,
-                        Text("0"),
+                        Text(
+                          "0",
+                          style: Theme.of(context).textTheme.headline6,
+                        ),
                       ],
                     ),
                     Text(
                       category.name,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                      ),
+                      style: Theme.of(context).textTheme.headline5,
                     ),
                   ],
                 ),

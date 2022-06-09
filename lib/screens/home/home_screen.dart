@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reminder/models/category_collection.dart';
+import 'package:reminder/models/category/category_collection.dart';
 import 'package:reminder/screens/home/footer.dart';
 import 'package:reminder/screens/home/grid_view_items.dart';
 import 'package:reminder/screens/home/list_view_items.dart';
@@ -16,6 +16,8 @@ enum LayoutType {
 
 class _HomeScreenState extends State<HomeScreen> {
   CategoryCollection categoryCollection = CategoryCollection();
+// print the categories in the console
+
   String layoutType = LayoutType.grid.toString();
 
   @override
@@ -37,7 +39,6 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             child: Text(
               layoutType == LayoutType.grid.toString() ? "Edit" : 'Done',
-              style: TextStyle(color: Colors.white),
             ),
           ),
         ],

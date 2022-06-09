@@ -3,7 +3,7 @@ import 'dart:collection';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:reminder/common/widgets/category_icon.dart';
-import 'package:reminder/models/category.dart';
+import 'package:reminder/models/category/category.dart';
 
 class CategoryCollection {
   final List<Category> _categories = [

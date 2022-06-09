@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reminder/models/category_collection.dart';
+import 'package:reminder/models/category/category_collection.dart';
 
 const LIST_VIEW_HEIGHT = 70.0;
 

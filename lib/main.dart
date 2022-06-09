@@ -1,11 +1,15 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:reminder/screens/add_list/add_list_screen.dart';
 import 'package:reminder/screens/home/home_screen.dart';
 
-void main() => runApp(const MyApp());
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
+  final ThemeData theme = ThemeData();
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +24,7 @@ class MyApp extends StatelessWidget {
       initialRoute: "/",
       routes: {
         "/": (context) => HomeScreen(),
+        "/addList": (context) => AddListScreen()
       },
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.black,
@@ -28,6 +33,19 @@ class MyApp extends StatelessWidget {
           elevation: 0,
         ),
         brightness: Brightness.dark,
+        iconTheme: IconThemeData(
+          color: Colors.white,
+        ),
+        accentColor: Colors.white,
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            primary: Colors.blueAccent,
+            textStyle: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+          ),
+        ),
       ),
     );
   }
