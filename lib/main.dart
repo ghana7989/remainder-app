@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:reminder/screens/add_list/add_list_screen.dart';
+import 'package:reminder/screens/add_reminder/add_reminder_screen.dart';
 import 'package:reminder/screens/home/home_screen.dart';
 
 void main() => runApp(MyApp());
@@ -19,32 +20,37 @@ class MyApp extends StatelessWidget {
         // SystemUiOverlay.bottom,
       ],
     );
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      initialRoute: "/",
-      routes: {
-        "/": (context) => HomeScreen(),
-        "/addList": (context) => AddListScreen()
-      },
-      theme: ThemeData(
-        scaffoldBackgroundColor: Colors.black,
-        appBarTheme: const AppBarTheme(
-          color: Colors.black,
-          elevation: 0,
-        ),
-        brightness: Brightness.dark,
-        iconTheme: IconThemeData(
-          color: Colors.white,
-        ),
-        accentColor: Colors.white,
-        textButtonTheme: TextButtonThemeData(
-          style: TextButton.styleFrom(
-            primary: Colors.blueAccent,
-            textStyle: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        initialRoute: "/",
+        routes: {
+          "/": (context) => HomeScreen(),
+          "/addList": (context) => AddListScreen(),
+          "/addReminder": (context) => AddReminderScreen(),
+        },
+        theme: ThemeData(
+          scaffoldBackgroundColor: Colors.black,
+          appBarTheme: const AppBarTheme(
+            color: Colors.black,
+            elevation: 0,
+          ),
+          brightness: Brightness.dark,
+          iconTheme: IconThemeData(
+            color: Colors.white,
+          ),
+          accentColor: Colors.white,
+          textButtonTheme: TextButtonThemeData(
+            style: TextButton.styleFrom(
+              primary: Colors.blueAccent,
+              textStyle: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
             ),
           ),
+          dividerColor: Colors.grey.shade900,
         ),
       ),
     );

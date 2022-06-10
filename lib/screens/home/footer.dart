@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reminder/screens/add_list/add_list_screen.dart';
+import 'package:reminder/screens/add_reminder/add_reminder_screen.dart';
 
 class Footer extends StatelessWidget {
   const Footer({
@@ -16,7 +17,15 @@ class Footer extends StatelessWidget {
           TextButton.icon(
             icon: Icon(Icons.add_circle),
             label: Text("New Reminder"),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddReminderScreen(),
+                  fullscreenDialog: true,
+                ),
+              );
+            },
           ),
           TextButton(
             onPressed: () {
