@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:reminder/models/common/custom_color.dart';
 import 'package:reminder/models/common/custom_color_collection.dart';
 import 'package:reminder/models/common/custom_icon.dart';
 import 'package:reminder/models/common/custom_icon_collection.dart';
+import 'package:reminder/models/todo_list/todo_list.dart';
+import 'package:reminder/models/todo_list/todo_list_collection.dart';
 
 class AddListScreen extends StatefulWidget {
   const AddListScreen({Key? key}) : super(key: key);
@@ -18,6 +21,10 @@ class _AddListScreenState extends State<AddListScreen> {
 
   String _listName = "";
 
+  void addNewList(TodoList list) {
+    Provider.of<TodoListCollection>(context, listen: false).addTodoList(list);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -30,7 +37,6 @@ class _AddListScreenState extends State<AddListScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _textController.dispose();
   }
@@ -46,8 +52,16 @@ class _AddListScreenState extends State<AddListScreen> {
                 ? null
                 : () {
                     if (_textController.text.isNotEmpty) {
-                      Navigator.pop(context, _textController.text);
+                      addNewList(TodoList(
+                        id: DateTime.now().toString(),
+                        title: _textController.text,
+                        icon: {
+                          "id": _selectedIcon.id,
+                          "color": _selectedColor.id,
+                        },
+                      ));
                     }
+                    Navigator.pop(context);
                   },
             child: Text(
               'Add',

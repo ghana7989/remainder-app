@@ -3,6 +3,7 @@ import 'package:reminder/models/category/category_collection.dart';
 import 'package:reminder/screens/home/footer.dart';
 import 'package:reminder/screens/home/grid_view_items.dart';
 import 'package:reminder/screens/home/list_view_items.dart';
+import 'package:reminder/screens/home/todo_lists.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -16,7 +17,6 @@ enum LayoutType {
 
 class _HomeScreenState extends State<HomeScreen> {
   CategoryCollection categoryCollection = CategoryCollection();
-// print the categories in the console
 
   String layoutType = LayoutType.grid.toString();
 
@@ -47,16 +47,21 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             Expanded(
-              child: AnimatedCrossFade(
-                firstChild: GridViewItems(
-                  categories: categoryCollection.selectedCategories,
-                ),
-                secondChild:
-                    ListViewItems(categoryCollection: categoryCollection),
-                crossFadeState: layoutType == LayoutType.grid.toString()
-                    ? CrossFadeState.showFirst
-                    : CrossFadeState.showSecond,
-                duration: Duration(milliseconds: 300),
+              child: ListView(
+                children: [
+                  AnimatedCrossFade(
+                    firstChild: GridViewItems(
+                      categories: categoryCollection.selectedCategories,
+                    ),
+                    secondChild:
+                        ListViewItems(categoryCollection: categoryCollection),
+                    crossFadeState: layoutType == LayoutType.grid.toString()
+                        ? CrossFadeState.showFirst
+                        : CrossFadeState.showSecond,
+                    duration: Duration(milliseconds: 300),
+                  ),
+                  TodoLists(),
+                ],
               ),
             ),
             Footer(),

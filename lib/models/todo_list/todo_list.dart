@@ -1,5 +1,5 @@
 class TodoList {
-  final int id;
+  final String id;
   final String title;
   Map icon;
 
