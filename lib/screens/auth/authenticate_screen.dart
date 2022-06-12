@@ -19,7 +19,8 @@ class _AuthenticateScreenState extends State<AuthenticateScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 300),
       child: _showSignInScreen
           ? SignInScreen(
               toggleView: toggleView,
