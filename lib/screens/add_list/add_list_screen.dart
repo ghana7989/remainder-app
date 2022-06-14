@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reminder/models/common/custom_color.dart';
@@ -50,16 +52,31 @@ class _AddListScreenState extends State<AddListScreen> {
           TextButton(
             onPressed: _listName.isEmpty
                 ? null
-                : () {
+                : () async {
                     if (_textController.text.isNotEmpty) {
-                      addNewList(TodoList(
-                        id: DateTime.now().toString(),
+                      final user = Provider.of<User>(context, listen: false);
+                      final todoListRef = FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(user.uid)
+                          .collection("todo_lists")
+                          .doc();
+                      final newTodoList = TodoList(
+                        id: todoListRef.id,
                         title: _textController.text,
                         icon: {
                           "id": _selectedIcon.id,
                           "color": _selectedColor.id,
                         },
-                      ));
+                        reminderCount: 0,
+                      );
+                      try {
+                        await todoListRef.set(
+                          newTodoList.toJson(),
+                        );
+                        print('List added');
+                      } catch (e) {
+                        print(e);
+                      }
                     }
                     Navigator.pop(context);
                   },
