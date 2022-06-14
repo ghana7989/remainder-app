@@ -1,7 +1,13 @@
 import 'package:flutter/gestures.dart';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:reminder/common/widgets/category_icon.dart';
+import 'package:reminder/models/category/category.dart';
+import 'package:reminder/models/category/category_collection.dart';
+import 'package:reminder/models/todo_list/todo_list.dart';
+import 'package:reminder/screens/add_reminder/select_reminder_category_screen.dart';
+import 'package:reminder/screens/add_reminder/select_reminder_screen.dart';
 
 class AddReminderScreen extends StatefulWidget {
   AddReminderScreen({Key? key}) : super(key: key);
@@ -13,6 +19,9 @@ class AddReminderScreen extends StatefulWidget {
 class _AddReminderScreenState extends State<AddReminderScreen> {
   final TextEditingController _titleTextController = TextEditingController();
   final TextEditingController _notesTextController = TextEditingController();
+  TodoList? _selectedList;
+  Category _selectedCategory = CategoryCollection().categories.first;
+
   String _title = "";
   String _notes = "";
 
@@ -31,6 +40,18 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
     });
   }
 
+  void _updateSelectedList(TodoList? list) {
+    setState(() {
+      _selectedList = list;
+    });
+  }
+
+  void _updateSelectedCategory(Category category) {
+    setState(() {
+      _selectedCategory = category;
+    });
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -40,6 +61,8 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final _todoLists = Provider.of<List<TodoList>>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('New Reminder'),
@@ -108,7 +131,19 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
                   tileColor: Theme.of(context).cardColor,
                   leading: Text('List',
                       style: Theme.of(context).textTheme.headline6),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SelectReminderListScreen(
+                          onSelectList: _updateSelectedList,
+                          selectedList: _selectedList ?? _todoLists.first,
+                          todoLists: _todoLists,
+                        ),
+                        fullscreenDialog: true,
+                      ),
+                    );
+                  },
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -119,7 +154,7 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
                       SizedBox(
                         width: 10,
                       ),
-                      Text("New List"),
+                      Text(_selectedList?.title ?? _todoLists.first.title),
                       Icon(Icons.arrow_forward_ios),
                     ],
                   ),
@@ -141,18 +176,29 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
                   tileColor: Theme.of(context).cardColor,
                   leading: Text('Category',
                       style: Theme.of(context).textTheme.headline6),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SelectReminderCategoryScreen(
+                          onSelectCategory: _updateSelectedCategory,
+                          selectedCategory: _selectedCategory,
+                        ),
+                        fullscreenDialog: true,
+                      ),
+                    );
+                  },
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       CategoryIcon(
-                        bgColor: Colors.blueAccent,
-                        iconData: Icons.calendar_today,
+                        bgColor: _selectedCategory.icon.bgColor,
+                        iconData: _selectedCategory.icon.iconData,
                       ),
                       SizedBox(
                         width: 10,
                       ),
-                      Text("Scheduled"),
+                      Text(_selectedCategory.name),
                       Icon(Icons.arrow_forward_ios),
                     ],
                   ),
