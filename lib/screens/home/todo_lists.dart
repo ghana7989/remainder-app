@@ -6,23 +6,13 @@ import 'package:reminder/common/widgets/category_icon.dart';
 import 'package:reminder/models/common/custom_color_collection.dart';
 import 'package:reminder/models/common/custom_icon_collection.dart';
 import 'package:reminder/models/todo_list/todo_list.dart';
+import 'package:reminder/screens/view_list/view_list_screen.dart';
+import 'package:reminder/services/db_service.dart';
 
 class TodoLists extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context, listen: false);
-    void deleteTodoList(TodoList list) async {
-      try {
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(user.uid)
-            .collection('todo_lists')
-            .doc(list.id)
-            .delete();
-      } catch (e) {
-        print(e);
-      }
-    }
 
     final todoLists = Provider.of<List<TodoList>>(context);
 
@@ -53,7 +43,11 @@ class TodoLists extends StatelessWidget {
               itemBuilder: (context, index) {
                 return Dismissible(
                   onDismissed: (direction) {
-                    deleteTodoList(todoLists[index]);
+                    try {
+                      DbService(uid: user.uid).deleteTodoList(todoLists[index]);
+                    } catch (e) {
+                      print(e);
+                    }
                   },
                   direction: DismissDirection.endToStart,
                   background: Container(
@@ -76,6 +70,16 @@ class TodoLists extends StatelessWidget {
                           borderRadius: BorderRadius.circular(0),
                         ),
                         child: ListTile(
+                          onTap: todoLists[index].reminderCount > 0
+                              ? () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ViewListScreen(
+                                            todoList: todoLists[index])),
+                                  );
+                                }
+                              : null,
                           leading: CategoryIcon(
                             bgColor: (CustomColorCollection().findColorById(
                               todoLists[index].icon["color"],
@@ -88,7 +92,7 @@ class TodoLists extends StatelessWidget {
                             todoLists[index].title,
                           ),
                           trailing: Text(
-                            "0",
+                            todoLists[index].reminderCount.toString(),
                             style:
                                 Theme.of(context).textTheme.bodyText2!.copyWith(
                                       fontWeight: FontWeight.bold,

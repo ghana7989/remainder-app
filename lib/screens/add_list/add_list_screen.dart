@@ -8,6 +8,7 @@ import 'package:reminder/models/common/custom_icon.dart';
 import 'package:reminder/models/common/custom_icon_collection.dart';
 import 'package:reminder/models/todo_list/todo_list.dart';
 import 'package:reminder/models/todo_list/todo_list_collection.dart';
+import 'package:reminder/services/db_service.dart';
 
 class AddListScreen extends StatefulWidget {
   const AddListScreen({Key? key}) : super(key: key);
@@ -55,13 +56,9 @@ class _AddListScreenState extends State<AddListScreen> {
                 : () async {
                     if (_textController.text.isNotEmpty) {
                       final user = Provider.of<User>(context, listen: false);
-                      final todoListRef = FirebaseFirestore.instance
-                          .collection('users')
-                          .doc(user.uid)
-                          .collection("todo_lists")
-                          .doc();
+
                       final newTodoList = TodoList(
-                        id: todoListRef.id,
+                        id: null,
                         title: _textController.text,
                         icon: {
                           "id": _selectedIcon.id,
@@ -70,10 +67,7 @@ class _AddListScreenState extends State<AddListScreen> {
                         reminderCount: 0,
                       );
                       try {
-                        await todoListRef.set(
-                          newTodoList.toJson(),
-                        );
-                        print('List added');
+                        DbService(uid: user.uid).addTodoList(newTodoList);
                       } catch (e) {
                         print(e);
                       }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:reminder/common/widgets/category_icon.dart';
 import 'package:reminder/models/todo_list/todo_list.dart';
 
 class SelectReminderListScreen extends StatelessWidget {

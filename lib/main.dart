@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:reminder/config/custom_theme.dart';
 import 'package:reminder/screens/wrapper.dart';
 
 void main() {
@@ -34,9 +35,14 @@ class _MyAppState extends State<MyApp> {
         if (snapshot.connectionState == ConnectionState.done) {
           return GestureDetector(
             onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-            child: StreamProvider<User?>.value(
-              value: FirebaseAuth.instance.authStateChanges(),
-              initialData: FirebaseAuth.instance.currentUser,
+            child: MultiProvider(
+              providers: [
+                StreamProvider<User?>(
+                  create: (context) => FirebaseAuth.instance.authStateChanges(),
+                  initialData: FirebaseAuth.instance.currentUser,
+                ),
+                ChangeNotifierProvider(create: (context) => CustomTheme()),
+              ],
               child: Wrapper(),
             ),
           );

@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:reminder/config/custom_theme.dart';
 import 'package:reminder/models/category/category_collection.dart';
 import 'package:reminder/screens/auth/authenticate_screen.dart';
 import 'package:reminder/screens/home/footer.dart';
@@ -28,6 +30,13 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         actions: [
+          IconButton(
+              onPressed: () {
+                final customTheme =
+                    Provider.of<CustomTheme>(context, listen: false);
+                customTheme.toggleTheme();
+              },
+              icon: Icon(Icons.wb_sunny)),
           IconButton(
             icon: Icon(Icons.logout),
             onPressed: () async {
